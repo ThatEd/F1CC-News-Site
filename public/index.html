@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>F1CC News | 2026 Desk</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;700;800&family=Barlow+Semi+Condensed:wght@500;700;800&display=swap" rel="stylesheet">
+	<style>
+		:root {
+			--bg: #35383d;
+			--bg-soft: #3e4248;
+			--paper: #454a51;
+			--paper-2: #4a5058;
+			--ink: #f7f8fa;
+			--muted: #ccd2dc;
+			--line: #616874;
+			--brand: #eb2d2a;
+			--brand-dark: #b11f1d;
+			--accent: #ff514d;
+			--shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+			--radius: 6px;
+		}
+
+		* {
+			box-sizing: border-box;
+		}
+
+		body {
+			margin: 0;
+			font-family: "Barlow", sans-serif;
+			color: var(--ink);
+			background:
+				linear-gradient(180deg, rgba(235, 45, 42, 0.08), transparent 180px),
+				radial-gradient(circle at 12% 12%, rgba(255, 81, 77, 0.12), transparent 28%),
+				var(--bg);
+			min-height: 100vh;
+		}
+
+		body.dialog-open {
+			overflow: hidden;
+		}
+
+		.site-shell {
+			width: min(1280px, calc(100% - 1.2rem));
+			margin: 0.75rem auto 1.4rem;
+			position: relative;
+		}
+
+		.topbar {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			border: 1px solid var(--line);
+			border-radius: var(--radius);
+			background: linear-gradient(180deg, #2f3339 0%, #26292f 100%);
+			box-shadow: var(--shadow);
+			padding: 0.7rem 1rem;
+			gap: 1rem;
+			overflow: hidden;
+			border-top: 3px solid var(--brand);
+		}
+
+		.brand {
+			font-family: "Barlow Semi Condensed", sans-serif;
+			font-size: clamp(1.85rem, 4vw, 2.6rem);
+			letter-spacing: 0.02em;
+			line-height: 0.95;
+			margin: 0;
+			color: #ffffff;
+			white-space: nowrap;
+			font-weight: 800;
+			text-transform: uppercase;
+		}
+
+		.brand span {
+			color: var(--brand);
+		}
+
+		.tagline {
+			font-weight: 700;
+			color: #d4dae4;
+			font-size: 0.82rem;
+			text-transform: uppercase;
+			letter-spacing: 0.06em;
+			white-space: nowrap;
+		}
+
+		.nav-row {
+			margin-top: 0.55rem;
+			background: #1f2227;
+			border: 1px solid #4c525d;
+			border-radius: var(--radius);
+			display: flex;
+			gap: 0.2rem;
+			padding: 0.28rem;
+			overflow-x: auto;
+		}
+
+		.nav-link {
+			color: #eef1f7;
+			text-decoration: none;
+			text-transform: uppercase;
+			font-family: "Barlow Semi Condensed", sans-serif;
+			font-weight: 700;
+			letter-spacing: 0.04em;
+			font-size: 0.82rem;
+			padding: 0.5rem 0.65rem;
+			border-radius: 3px;
+			border: 1px solid transparent;
+			white-space: nowrap;
+		}
+
+		.nav-link:hover,
+		.nav-link.active {
+			background: #2f343b;
+			border-color: #555d69;
+		}
+
+		.ticker-wrap {
+			margin-top: 0.7rem;
+			background: #1c1f24;
+			color: #fff;
+			border-radius: var(--radius);
+			overflow: hidden;
+			border: 1px solid #4f5662;
+		}
+
+		.ticker {
+			display: inline-block;
+			padding: 0.5rem 0;
+			white-space: nowrap;
+			animation: ticker 28s linear infinite;
+			font-weight: 600;
+			letter-spacing: 0.03em;
+			font-size: 0.9rem;
+		}
+
+		.ticker span {
+			margin: 0 1.8rem;
+			color: #f9db55;
+		}
+
+		@keyframes ticker {
+			from { transform: translateX(0); }
+			to { transform: translateX(-50%); }
+		}
+
+		.hero {
+			margin-top: 0.8rem;
+			padding: 1.05rem;
+			border: 1px solid var(--line);
+			border-radius: var(--radius);
+			background: linear-gradient(180deg, #3f444b 0%, #383c43 100%);
+			position: relative;
+			overflow: hidden;
+		}
+
+		.hero::before {
+			content: "";
+			position: absolute;
+			inset: 0;
+			background: repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0 8px, rgba(255, 255, 255, 0) 8px 16px);
+			pointer-events: none;
+		}
+
+		.hero h2 {
+			font-family: "Barlow Semi Condensed", sans-serif;
+			font-size: clamp(1.7rem, 5vw, 2.6rem);
+			margin: 0;
+			color: #ffffff;
+			letter-spacing: -0.02em;
+			line-height: 1;
+			max-width: 18ch;
+			position: relative;
+			z-index: 2;
+			text-transform: uppercase;
+		}
+
+		.hero p {
+			max-width: 75ch;
+			color: #d2d9e3;
+			font-size: 0.97rem;
+			margin-bottom: 0;
+			position: relative;
+			z-index: 2;
+		}
+
+		.frontpage {
+			display: grid;
+			grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+			gap: 0.8rem;
+			align-items: stretch;
+			position: relative;
+			z-index: 2;
+		}
+
+		.feature-card,
+		.headline-stack {
+			border: 1px solid #6b7380;
+			border-radius: 4px;
+			background: #2f3339;
+			box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+		}
+
+		.feature-card {
+			padding: 0.8rem;
+		}
+
+		.feature-card a,
+		.headline-link {
+			color: inherit;
+			text-decoration: none;
+		}
+
+		.feature-title {
+			margin: 0.55rem 0 0.35rem;
+			font-family: "Barlow Semi Condensed", sans-serif;
+			font-size: clamp(1.3rem, 2.4vw, 2rem);
+			line-height: 1.02;
+			text-transform: uppercase;
+		}
+
+		.feature-kicker,
+		.headline-kicker {
+			font-size: 0.75rem;
+			text-transform: uppercase;
+			letter-spacing: 0.06em;
+			color: #ffcbca;
+			font-weight: 700;
+		}
+
+		.feature-card .img-placeholder {
+			min-height: 250px;
+			margin: 0;
+		}
+
+		.feature-card img,
+		.teaser-image {
+			width: 100%;
+			height: auto;
+			max-height: 320px;
+			object-fit: cover;
+			border-radius: 4px;
+			border: 1px solid #727b8a;
+			display: block;
+		}
+
+		.headline-stack {
+			display: grid;
+			gap: 0;
+			overflow: hidden;
+		}
+
+		.headline-link {
+			display: block;
+			padding: 0.95rem;
+			border-bottom: 1px solid #59616d;
+			transition: background 0.15s ease;
+		}
+
+		.headline-link:last-child {
+			border-bottom: 0;
+		}
+
+		.headline-link:hover {
+			background: #3a4048;
+		}
+
+		.headline-link h3 {
+			margin: 0.35rem 0 0.25rem;
+			font-family: "Barlow Semi Condensed", sans-serif;
+			font-size: 1.28rem;
+			line-height: 1.04;
+			text-transform: uppercase;
+		}
+
+		.headline-link p {
+			margin: 0;
+			color: #d5dbe4;
+			font-size: 0.92rem;
+			line-height: 1.35;
+		}
+
+		.front-teasers {
+			display: grid;
+			gap: 0.8rem;
+		}
+
+		.teaser-card {
+			background: #40454c;
+			border: 1px solid #6b7380;
+			border-radius: 4px;
+			padding: 0.8rem;
+			box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+		}
+
+		.teaser-card a {
+			color: inherit;
+			text-decoration: none;
+		}
+
+		.teaser-card h3 {
+			margin: 0.5rem 0 0.25rem;
+			font-family: "Barlow Semi Condensed", sans-serif;
+			font-size: 1.25rem;
+			text-transform: uppercase;
+			line-height: 1.05;
+		}
+
+		.teaser-card p {
+			margin: 0;
+			color: #d6dce6;
+		}
+
+		.content-layout {
+			display: grid;
+			grid-template-columns: minmax(0, 2.2fr) minmax(260px, 1fr);
+			gap: 0.8rem;
+			align-items: start;
+			margin-top: 0.8rem;
+		}
+
+		.grid {
+			display: grid;
+			grid-template-columns: 1fr;
+			gap: 0.8rem;
+			margin-top: 0;
+		}
+
+		.article {
+			background: var(--paper);
+			border: 1px solid var(--line);
+			border-radius: var(--radius);
+			box-shadow: var(--shadow);
+			overflow: hidden;
+			opacity: 0;
+			transform: translateY(16px);
+			animation: reveal 0.55s ease forwards;
+		}
+
+		.article:nth-child(2) {
+			animation-delay: 0.18s;
+		}
+
+		@keyframes reveal {
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+
+		.article-head {
+			padding: 0.95rem 0.95rem 0.75rem;
+			border-bottom: 1px solid var(--line);
+			background: linear-gradient(180deg, #4d535c 0%, #434952 100%);
+		}
+
+		.label-row {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.5rem;
+			margin-bottom: 0.65rem;
+		}
+
+		.pill {
+			border-radius: 999px;
+			padding: 0.25rem 0.6rem;
+			font-size: 0.74rem;
+			font-weight: 800;
+			letter-spacing: 0.06em;
+			text-transform: uppercase;
+			border: 1px solid transparent;
+		}
+
+		.pill.breaking {
+			background: #582527;
+			color: #ffd2d0;
+			border-color: #8a3b3f;
+		}
+
+		.pill.analysis {
+			background: #2e3e55;
+			color: #d7e7ff;
+			border-color: #4f6586;
+		}
+
+		.article h3 {
+			margin: 0;
+			font-size: clamp(1.32rem, 2.4vw, 1.95rem);
+			line-height: 1.06;
+			font-family: "Barlow Semi Condensed", sans-serif;
+			text-transform: uppercase;
+			letter-spacing: -0.01em;
+		}
+
+		.meta {
+			margin-top: 0.55rem;
+			color: #c7cdd7;
+			font-weight: 600;
+			font-size: 0.85rem;
+		}
+
+		.action-row {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.45rem;
+			margin-top: 0.75rem;
+		}
+
+		.fake-btn {
+			background: #2a2e35;
+			color: #f5f7fc;
+			border: 1px solid #666f7c;
+			border-radius: 3px;
+			padding: 0.35rem 0.55rem;
+			font-size: 0.74rem;
+			font-weight: 700;
+			letter-spacing: 0.04em;
+			text-transform: uppercase;
+		}
+
+		.fake-btn.primary {
+			background: #a52624;
+			border-color: #d53f3c;
+		}
+
+		.article-body {
+			padding: 0.95rem;
+			line-height: 1.55;
+			font-size: 0.98rem;
+			color: #eef2f8;
+		}
+
+		.img-placeholder {
+			display: grid;
+			place-items: center;
+			min-height: 210px;
+			margin: 0.5rem 0 0.8rem;
+			border-radius: 4px;
+			border: 1px dashed #7c8695;
+			background:
+				linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01)),
+				repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.03) 0 10px, rgba(255, 255, 255, 0) 10px 20px);
+			color: #d4dbe7;
+			font-family: "Barlow Semi Condensed", sans-serif;
+			font-size: 0.96rem;
+			letter-spacing: 0.05em;
+			text-transform: uppercase;
+		}
+
+		.image-card {
+			margin: 0.5rem 0 0.8rem;
+		}
+
+		.image-card img {
+			display: block;
+			width: 100%;
+			height: auto;
+			max-height: 420px;
+			object-fit: cover;
+			border-radius: 4px;
+			border: 1px solid #727b8a;
+		}
+
+		.image-card figcaption {
+			font-size: 0.78rem;
+			color: #c3cbd8;
+			margin-top: 0.36rem;
+			text-transform: uppercase;
+			letter-spacing: 0.04em;
+		}
+
+		.img-slot {
+			display: flex;
+			flex-direction: column;
+			gap: 0.32rem;
+		}
+
+		.img-slot img {
+			display: block;
+			width: 100%;
+			height: 92px;
+			object-fit: cover;
+			border-radius: 4px;
+			border: 1px solid #727b8a;
+		}
+
+		.img-row {
+			display: grid;
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			gap: 0.45rem;
+			margin: 0.35rem 0 0.8rem;
+		}
+
+		.img-row .img-placeholder {
+			min-height: 92px;
+			margin: 0;
+			font-size: 0.75rem;
+		}
+
+		.article-body h4 {
+			margin: 1.15rem 0 0.5rem;
+			font-size: 1.05rem;
+			color: #ffffff;
+			border-left: 3px solid var(--brand);
+			padding-left: 0.5rem;
+			line-height: 1.2;
+			text-transform: uppercase;
+			font-family: "Barlow Semi Condensed", sans-serif;
+			letter-spacing: 0.03em;
+		}
+
+		.article-body p {
+			margin: 0.6rem 0;
+		}
+
+		dialog.news-dialog {
+			width: min(980px, calc(100% - 1rem));
+			max-height: calc(100vh - 1rem);
+			padding: 0;
+			border: 1px solid #6b7380;
+			border-radius: 6px;
+			background: #3f444b;
+			color: var(--ink);
+			box-shadow: 0 22px 60px rgba(0, 0, 0, 0.55);
+			overflow: auto;
+		}
+
+		dialog.news-dialog::backdrop {
+			background: rgba(7, 8, 10, 0.78);
+			backdrop-filter: blur(2px);
+		}
+
+		.dialog-bar {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 0.75rem;
+			padding-bottom: 0.65rem;
+			margin-bottom: 0.65rem;
+			border-bottom: 1px solid #69727f;
+		}
+
+		.dialog-label {
+			font-family: "Barlow Semi Condensed", sans-serif;
+			text-transform: uppercase;
+			letter-spacing: 0.05em;
+			font-size: 0.85rem;
+			font-weight: 800;
+			color: #ffcbca;
+		}
+
+		.dialog-close {
+			border: 1px solid #69727f;
+			border-radius: 3px;
+			background: #2d3138;
+			color: #ffffff;
+			padding: 0.35rem 0.6rem;
+			font-weight: 700;
+			text-transform: uppercase;
+			letter-spacing: 0.04em;
+		}
+
+		.dialog-close:hover {
+			background: #3a4048;
+		}
+
+		.dialog-shell {
+			padding: 0.95rem;
+		}
+
+		.sidebar {
+			border: 1px solid var(--line);
+			border-radius: var(--radius);
+			background: linear-gradient(180deg, #424851 0%, #3a3f47 100%);
+			box-shadow: var(--shadow);
+			overflow: hidden;
+		}
+
+		.sidebar-head {
+			padding: 0.8rem 0.9rem;
+			border-bottom: 1px solid var(--line);
+			font-family: "Barlow Semi Condensed", sans-serif;
+			font-size: 1rem;
+			font-weight: 800;
+			text-transform: uppercase;
+			letter-spacing: 0.03em;
+		}
+
+		.side-block {
+			padding: 0.8rem 0.9rem;
+			border-bottom: 1px solid #58606d;
+		}
+
+		.side-block:last-child {
+			border-bottom: 0;
+		}
+
+		.side-title {
+			margin: 0 0 0.6rem;
+			font-size: 0.8rem;
+			text-transform: uppercase;
+			letter-spacing: 0.05em;
+			color: #cad1dc;
+		}
+
+		.side-list {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+			display: grid;
+			gap: 0.5rem;
+		}
+
+		.side-list li {
+			padding-bottom: 0.45rem;
+			border-bottom: 1px dotted #697282;
+			font-size: 0.93rem;
+			line-height: 1.25;
+		}
+
+		.side-list li:last-child {
+			border-bottom: 0;
+			padding-bottom: 0;
+		}
+
+		.side-thumb {
+			min-height: 72px;
+			margin-top: 0.55rem;
+		}
+
+		footer {
+			margin-top: 0.8rem;
+			border: 1px solid var(--line);
+			border-radius: var(--radius);
+			padding: 0.7rem 0.95rem;
+			background: #2d3138;
+			font-weight: 600;
+			color: #ccd2dc;
+			text-align: center;
+			font-size: 0.9rem;
+		}
+
+		@media (max-width: 980px) {
+			.content-layout {
+				grid-template-columns: 1fr;
+			}
+
+			.frontpage {
+				grid-template-columns: 1fr;
+			}
+
+			.sidebar {
+				order: -1;
+			}
+		}
+
+		@media (max-width: 720px) {
+			.site-shell {
+				width: calc(100% - 0.7rem);
+				margin-top: 0.35rem;
+			}
+
+			.topbar {
+				flex-direction: column;
+				align-items: flex-start;
+			}
+
+			.tagline {
+				font-size: 0.72rem;
+			}
+
+			.hero {
+				padding: 0.85rem;
+			}
+
+			.article-head,
+			.article-body {
+				padding: 0.82rem;
+			}
+
+			.img-row {
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+			}
+		}
+	</style>
+</head>
+<body>
+	<main class="site-shell">
+		<div class="sticky-header" style="position: sticky; top: 0; z-index: 100; padding-top: 0.6rem; padding-bottom: 0.8rem; margin-top: -0.6rem; background: var(--bg);">
+        <header class="topbar">
+          <a href="index.html" style="text-decoration: none; color: inherit;"><h1 class="brand">F1CC <span>News</span></h1></a>
+          <div class="tagline">Independent Formula 1 Coverage | 2026 Edition</div>
+        </header>
+        <nav class="nav-row" style="margin-top: 0.55rem; background: #1f2227; border: 1px solid #4c525d; border-radius: var(--radius); display: flex; gap: 0.2rem; padding: 0.28rem; overflow-x: auto;" aria-label="Primary">
+          <a class="nav-link active" href="index.html" style="color: #eef1f7; text-decoration: none; text-transform: uppercase; font-family: 'Barlow Semi Condensed', sans-serif; font-weight: 700; letter-spacing: 0.04em; font-size: 0.82rem; padding: 0.5rem 0.65rem; border-radius: 3px; white-space: nowrap;">News</a>
+          <a class="nav-link" href="#" style="color: #eef1f7; text-decoration: none; text-transform: uppercase; font-family: 'Barlow Semi Condensed', sans-serif; font-weight: 700; letter-spacing: 0.04em; font-size: 0.82rem; padding: 0.5rem 0.65rem; border-radius: 3px; white-space: nowrap;">Race Center</a>
+          <a class="nav-link" href="https://jrfoster09.github.io/f1cc-wiki/pages/season.html?year=2026" style="color: #eef1f7; text-decoration: none; text-transform: uppercase; font-family: 'Barlow Semi Condensed', sans-serif; font-weight: 700; letter-spacing: 0.04em; font-size: 0.82rem; padding: 0.5rem 0.65rem; border-radius: 3px; white-space: nowrap;">Standings</a>
+          <a class="nav-link" href="#" style="color: #eef1f7; text-decoration: none; text-transform: uppercase; font-family: 'Barlow Semi Condensed', sans-serif; font-weight: 700; letter-spacing: 0.04em; font-size: 0.82rem; padding: 0.5rem 0.65rem; border-radius: 3px; white-space: nowrap;">Interviews</a>
+          <a class="nav-link" href="#" style="color: #eef1f7; text-decoration: none; text-transform: uppercase; font-family: 'Barlow Semi Condensed', sans-serif; font-weight: 700; letter-spacing: 0.04em; font-size: 0.82rem; padding: 0.5rem 0.65rem; border-radius: 3px; white-space: nowrap;">Analysis</a>
+          <a class="nav-link" href="#" style="color: #eef1f7; text-decoration: none; text-transform: uppercase; font-family: 'Barlow Semi Condensed', sans-serif; font-weight: 700; letter-spacing: 0.04em; font-size: 0.82rem; padding: 0.5rem 0.65rem; border-radius: 3px; white-space: nowrap;">Schedules</a>
+          <a class="nav-link" href="https://jrfoster09.github.io/f1cc-wiki/pages/teams.html" style="color: #eef1f7; text-decoration: none; text-transform: uppercase; font-family: 'Barlow Semi Condensed', sans-serif; font-weight: 700; letter-spacing: 0.04em; font-size: 0.82rem; padding: 0.5rem 0.65rem; border-radius: 3px; white-space: nowrap;">Teams</a>
+        </nav>
+      </div>
+
+		<div class="ticker-wrap" aria-label="news ticker">
+			<div class="ticker">
+				<span>Live Desk</span>Vaisanen extends championship lead after Shanghai strategy masterclass<span>Update</span>Cachinho now on six penalty points after China incidents<span>Paddock</span>Kevu limits losses and stays in title range<span>Focus</span>Suzuka pressure mounts before Round 3
+			</div>
+		</div>
+
+		<section class="hero" id="hero-container"></section>
+
+		<div class="content-layout">
+			<section class="front-teasers" id="teasers-container"></section>
+
+<!--
+			<aside class="sidebar" aria-label="More stories">
+				<div class="sidebar-head">More Headlines</div>
+				<section class="side-block">
+					<h4 class="side-title">Latest Updates</h4>
+					<ul class="side-list">
+						<li>JackTEF set for FW14B drive at Goodwood while F1 is out of town</li>
+						<li>Ferrari approach to Liam Dela Cruz reportedly rejected after retirement</li>
+						<li>RFK Racing says all four Fords had race-winning speed at Daytona 500</li>
+					</ul>
+					<div class="img-slot side-thumb">
+						<img src="images/Fer EV Garage.jpg" alt="News headline image 1">
+						<div class="img-placeholder">Sidebar image slot 1</div>
+					</div>
+				</section>
+
+				<section class="side-block">
+					<h4 class="side-title">Latest On Track</h4>
+					<ul class="side-list">
+						<li>China GP fallout: paddock turns attention to strategy and penalties</li>
+						<li>Japan preview: Suzuka pressure rises for title contenders</li>
+						<li>Ferrari's championship lead becomes the paddock benchmark</li>
+					</ul>
+					<div class="img-slot side-thumb">
+						<img src="images/RB Roy Garage.png" alt="News headline image 2">
+						<div class="img-placeholder">Sidebar image slot 2</div>
+					</div>
+				</section>
+			</aside>
+-->
+			<div id="sidebar-container"></div>
+		</div>
+
+		<footer>
+			F1CC News | 2026 coverage
+		</footer>
+	</main>
+	<script src="stories.js"></script>
+  <script src="sidebar.js"></script>
+
+
+
+
+
+
+
+<script>
+  function extractSnippet(html) {
+      if (!html) return '';
+      const tmp = document.createElement('div');
+      tmp.innerHTML = html;
+      let text = tmp.textContent || tmp.innerText || '';
+      text = text.trim();
+      return text.length > 120 ? text.substring(0, 117) + '...' : text;
+  }
+
+  function parseDateFromMeta(meta) {
+    const m = (meta || '').match(/Published:\s*(\d+)\s+(\w+)\s+(\d{4})/);
+    if (!m) return new Date(0);
+    return new Date(m[2] + ' ' + m[1] + ', ' + m[3]);
+  }
+
+  async function initFrontPage() {
+    await window.loadStories();
+    const storiesArray = Object.entries(window.stories)
+      .map(([key, story]) => ({ key, ...story }))
+      .filter(s => Array.isArray(s.tags) && s.tags.includes('F1'));
+
+    storiesArray.sort((a, b) => parseDateFromMeta(b.meta) - parseDateFromMeta(a.meta));
+
+    const leadStory = storiesArray[0] || {};
+    const topStory1 = storiesArray[1] || {};
+    const topStory2 = storiesArray[2] || {};
+    const teasers = storiesArray.slice(3);
+
+    const heroContainer = document.getElementById('hero-container');
+    if (heroContainer && leadStory.key) {
+        heroContainer.innerHTML = `
+        <div class="frontpage">
+            <div class="feature-card">
+                <div class="feature-kicker">Featured Image</div>
+                <a href="article.html?story=${leadStory.key}" aria-label="Open ${leadStory.title}">
+                    <img src="${leadStory.image}" alt="Lead Image" style="width:100%;height:auto;max-height:320px;object-fit:cover;border-radius:4px;border:1px solid #727b8a;display:block;">
+                </a>
+                <a href="article.html?story=${leadStory.key}">
+                    <div class="feature-title">${leadStory.title}</div>
+                </a>
+            </div>
+            <div class="headline-stack" aria-label="Top headlines">
+                ${topStory1.key ? `<a class="headline-link" href="article.html?story=${topStory1.key}">
+                    <div class="headline-kicker">${topStory1.kicker || 'Top Story'}</div>
+                    <h3>${topStory1.title}</h3>
+                    <p style="color: #b0b8c4; font-size: 0.85rem; margin-bottom: 0.3rem;">${topStory1.meta}</p>
+                    <p style="color: #d6dce6; font-size: 0.9rem; line-height: 1.4;">${extractSnippet(topStory1.body)}</p>
+                </a>` : ''}
+                ${topStory2.key ? `<a class="headline-link" href="article.html?story=${topStory2.key}">
+                    <div class="headline-kicker">${topStory2.kicker || 'Analysis'}</div>
+                    <h3>${topStory2.title}</h3>
+                    <p style="color: #b0b8c4; font-size: 0.85rem; margin-bottom: 0.3rem;">${topStory2.meta}</p>
+                    <p style="color: #d6dce6; font-size: 0.9rem; line-height: 1.4;">${extractSnippet(topStory2.body)}</p>
+                </a>` : ''}
+            </div>
+        </div>`;
+    }
+
+    const teasersContainer = document.getElementById('teasers-container');
+    if (teasersContainer && teasers.length > 0) {
+        teasersContainer.innerHTML = teasers.map(story => `
+            <div class="teaser-card">
+                <div class="label-row" style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.5rem;">
+                    ${(story.tags || []).map(tag => `<a href="tags.html?tag=${encodeURIComponent(tag)}" class="pill ${tag.toLowerCase() === 'breaking' ? 'breaking' : 'analysis'}">${tag}</a>`).join('')}
+                </div>
+                <a href="article.html?story=${story.key}">
+                    <img class="teaser-image" src="${story.image}" alt="${story.title}" style="width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;margin:0.5rem 0;border-radius:3px;">
+                    <h3>${story.title}</h3>
+                </a>
+                <p style="color: #b0b8c4; font-size: 0.82rem; margin-top: 0.3rem; margin-bottom: 0.4rem;">${story.meta}</p>
+                <p style="color: #d6dce6; font-size: 0.9rem; line-height: 1.4;">${extractSnippet(story.body)}</p>
+            </div>
+        `).join('');
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', initFrontPage);
+</script>
+</body>
+</html>

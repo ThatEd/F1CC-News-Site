@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>F1CC News Article</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;700;800&family=Barlow+Semi+Condensed:wght@500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #35383d;
+      --paper: #454a51;
+      --ink: #f7f8fa;
+      --muted: #cfd6df;
+      --line: #636b78;
+      --brand: #eb2d2a;
+      --shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+      --radius: 6px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Barlow", sans-serif;
+      color: var(--ink);
+      background:
+        linear-gradient(180deg, rgba(235, 45, 42, 0.08), transparent 180px),
+        radial-gradient(circle at 12% 12%, rgba(255, 81, 77, 0.12), transparent 28%),
+        var(--bg);
+      min-height: 100vh;
+    }
+    .site-shell { width: min(1180px, calc(100% - 1rem)); margin: 0.6rem auto 1rem; }
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      border: 1px solid var(--line); border-top: 3px solid var(--brand); border-radius: var(--radius);
+      background: linear-gradient(180deg, #2f3339 0%, #26292f 100%); box-shadow: var(--shadow);
+      padding: 0.7rem 1rem;
+    }
+    .brand { margin: 0; font-family: "Barlow Semi Condensed", sans-serif; text-transform: uppercase; font-weight: 800; letter-spacing: 0.02em; }
+    .brand span { color: var(--brand); }
+    .tagline { color: #d4dae4; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; }
+    .panel {
+      margin-top: 0.75rem; border: 1px solid var(--line); border-radius: var(--radius); background: linear-gradient(180deg, #3f444b 0%, #383c43 100%);
+      box-shadow: var(--shadow); overflow: hidden;
+    }
+    .article-head { padding: 0.95rem; border-bottom: 1px solid var(--line); background: linear-gradient(180deg, #4d535c 0%, #434952 100%); }
+    .label-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.65rem; }
+    .pill { border-radius: 999px; padding: 0.25rem 0.6rem; font-size: 0.74rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; border: 1px solid transparent; }
+    .pill.breaking { background: #582527; color: #ffd2d0; border-color: #8a3b3f; }
+    .pill.analysis { background: #2e3e55; color: #d7e7ff; border-color: #4f6586; }
+    h1 { margin: 0; font-family: "Barlow Semi Condensed", sans-serif; text-transform: uppercase; letter-spacing: -0.01em; line-height: 1.02; font-size: clamp(1.65rem, 4vw, 2.5rem); }
+    .meta { margin-top: 0.55rem; color: #c7cdd7; font-weight: 600; font-size: 0.85rem; }
+    .article-body { padding: 0.95rem; line-height: 1.55; font-size: 0.98rem; color: #eef2f8; }
+    .image-card { margin: 0.4rem 0 0.85rem; }
+    .image-card img { display: block; width: 100%; max-height: 420px; object-fit: cover; border-radius: 4px; border: 1px solid #727b8a; }
+    .image-card figcaption { margin-top: 0.35rem; color: #c3cbd8; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .article-body h2 { margin: 1.05rem 0 0.45rem; font-family: "Barlow Semi Condensed", sans-serif; text-transform: uppercase; font-size: 1.08rem; border-left: 3px solid var(--brand); padding-left: 0.5rem; }
+    .article-body p { margin: 0.65rem 0; }
+    .back-link { display: inline-flex; margin-top: 0.9rem; color: #fff; text-decoration: none; background: #2a2e35; border: 1px solid #666f7c; border-radius: 3px; padding: 0.45rem 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+    .back-link:hover { background: #3a4048; }
+
+    .comments-wrap { margin-top: 1rem; border-top: 1px solid var(--line); padding-top: 0.9rem; }
+    .comments-title { margin: 0 0 0.6rem; font-family: "Barlow Semi Condensed", sans-serif; text-transform: uppercase; letter-spacing: 0.03em; font-size: 1.05rem; }
+    .comment-compose { display: grid; gap: 0.5rem; padding: 0.65rem; border: 1px solid #596271; border-radius: 4px; background: #3a3f46; }
+    .comment-compose input,
+    .comment-compose textarea {
+      width: 100%;
+      border: 1px solid #677182;
+      border-radius: 3px;
+      background: #2f343b;
+      color: #eef2f8;
+      font-family: "Barlow", sans-serif;
+      font-size: 0.92rem;
+      padding: 0.45rem 0.55rem;
+    }
+    .comment-compose textarea { min-height: 95px; resize: vertical; }
+    .comment-actions { display: flex; justify-content: space-between; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+    .comment-note { color: #c7ceda; font-size: 0.78rem; }
+    .comment-send {
+      border: 1px solid #8c383d;
+      border-radius: 3px;
+      background: #6e2427;
+      color: #fff;
+      padding: 0.42rem 0.7rem;
+      font-family: "Barlow Semi Condensed", sans-serif;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .comment-send:hover { background: #8a2b2f; }
+    .comments-list { margin-top: 0.85rem; display: grid; gap: 0.65rem; }
+    .comment-card {
+      border: 1px solid #5e6775;
+      border-radius: 4px;
+      background: #3a3f47;
+      padding: 0.6rem 0.7rem;
+    }
+    .comment-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.35rem; }
+    .comment-author { font-weight: 700; color: #f3f6fc; }
+    .comment-date { color: #bdc6d3; font-size: 0.78rem; }
+    .comment-text { margin: 0; color: #edf1f8; line-height: 1.45; font-size: 0.93rem; white-space: pre-wrap; }
+    .comment-meta { margin-top: 0.45rem; display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap; }
+    .vote-btn {
+      border: 1px solid #6a7382;
+      border-radius: 3px;
+      background: #2d3239;
+      color: #eef3fb;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      font-weight: 700;
+      padding: 0.22rem 0.45rem;
+      cursor: pointer;
+    }
+    .vote-btn:hover { background: #3a4048; }
+    .vote-btn.active-like {
+      background: #1e4fb2;
+      border-color: #3d74df;
+      color: #ffffff;
+    }
+    .vote-btn.active-dislike {
+      background: #6a2c34;
+      border-color: #a64a58;
+      color: #ffffff;
+    }
+    .reply-btn {
+      border: 1px solid #6a7382;
+      border-radius: 3px;
+      background: #2d3239;
+      color: #eef3fb;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      font-weight: 700;
+      padding: 0.22rem 0.45rem;
+      cursor: pointer;
+    }
+    .reply-btn:hover { background: #3a4048; }
+    .reply-compose {
+      margin-top: 0.55rem;
+      padding: 0.5rem;
+      border: 1px solid #596271;
+      border-radius: 4px;
+      background: #343942;
+      display: grid;
+      gap: 0.4rem;
+    }
+    .reply-compose input,
+    .reply-compose textarea {
+      width: 100%;
+      border: 1px solid #677182;
+      border-radius: 3px;
+      background: #2f343b;
+      color: #eef2f8;
+      font-family: "Barlow", sans-serif;
+      font-size: 0.9rem;
+      padding: 0.4rem 0.5rem;
+    }
+    .reply-compose textarea { min-height: 78px; resize: vertical; }
+    .reply-actions { display: flex; gap: 0.4rem; }
+    .reply-send,
+    .reply-cancel {
+      border: 1px solid #6a7382;
+      border-radius: 3px;
+      background: #2d3239;
+      color: #ffffff;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      font-weight: 700;
+      padding: 0.25rem 0.5rem;
+      cursor: pointer;
+    }
+    .reply-send { border-color: #8c383d; background: #6e2427; }
+    .reply-send:hover { background: #8a2b2f; }
+    .reply-cancel:hover { background: #3a4048; }
+    .comment-status {
+      border: 1px solid #6b6f29;
+      border-radius: 999px;
+      padding: 0.16rem 0.45rem;
+      font-size: 0.67rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 800;
+      color: #f9f2b4;
+      background: #4a4b1f;
+    }
+    .reply-list { margin-top: 0.6rem; padding-left: 0.7rem; border-left: 2px solid #5f6877; display: grid; gap: 0.55rem; }
+
+    .frontpage {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+      gap: 0.8rem;
+      align-items: stretch;
+      position: relative;
+      z-index: 2;
+    }
+    .sidebar { margin-top: 0.75rem; border: 1px solid var(--line); border-radius: var(--radius); background: linear-gradient(180deg, #424851 0%, #3a3f47 100%); box-shadow: var(--shadow); overflow: hidden; }
+    .sidebar-head { padding: 0.8rem 0.9rem; border-bottom: 1px solid var(--line); font-family: "Barlow Semi Condensed", sans-serif; font-size: 1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.03em; }
+    .side-block { padding: 0.8rem 0.9rem; border-bottom: 1px solid #58606d; }
+    .side-block:last-child { border-bottom: 0; }
+    .side-title { margin: 0 0 0.6rem; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: #cad1dc; }
+    .side-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.5rem; }
+    .side-list li { padding-bottom: 0.45rem; border-bottom: 1px dotted #697282; font-size: 0.93rem; line-height: 1.25; }
+    .side-list li:last-child { border-bottom: none; padding-bottom: 0; }
+    .side-thumb { position: relative; margin-top: 0.8rem; border-radius: 3px; overflow: hidden; border: 1px solid #555d69; }
+    .side-thumb img { display: block; width: 100%; height: auto; }
+    .img-placeholder { position: absolute; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; text-transform: uppercase; font-weight: 600; color: rgba(255,255,255,0.7); }
+
+    @media (max-width: 980px) {
+      .frontpage { grid-template-columns: 1fr; }
+      .sidebar { order: -1; }
+    }
+    @media (max-width: 720px) {
+      .site-shell { width: calc(100% - 0.6rem); }
+      .topbar { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <main class="site-shell">
+    <div class="sticky-header" style="position: sticky; top: 0; z-index: 100; padding-top: 0.6rem; padding-bottom: 0.8rem; margin-top: -0.6rem; background: var(--bg);">
+      <header class="topbar">
+        <a href="index.html" style="text-decoration: none; color: inherit;"><h1 class="brand">F1CC <span>News</span></h1></a>
+        <div class="tagline">Independent Formula 1 Coverage | 2026 Edition</div>
+      </header>
+      <nav class="nav-row" style="margin-top: 0.55rem; background: #1f2227; border: 1px solid #4c525d; border-radius: var(--radius); display: flex; gap: 0.2rem; padding: 0.28rem; overflow-x: auto;" aria-label="Primary">
+        <a class="nav-link active" href="index.html" style="color: #eef1f7; text-decoration: none; text-transform: uppercase; font-family: 'Barlow Semi Condensed', sans-serif; font-weight: 700; letter-spacing: 0.04em; font-size: 0.82rem; padding: 0.5rem 0.65rem; border-radius: 3px; white-space: nowrap;">News</a>
+        <a class="nav-link" href="#" style="color: #eef1f7; text-decoration: none; text-transform: uppercase; font-family: 'Barlow Semi Condensed', sans-serif; font-weight: 700; letter-spacing: 0.04em; font-size: 0.82rem; padding: 0.5rem 0.65rem; border-radius: 3px; white-space: nowrap;">Race Center</a>
+        <a class="nav-link" href="https://jrfoster09.github.io/f1cc-wiki/pages/season.html?year=2026" style="color: #eef1f7; text-decoration: none; text-transform: uppercase; font-family: 'Barlow Semi Condensed', sans-serif; font-weight: 700; letter-spacing: 0.04em; font-size: 0.82rem; padding: 0.5rem 0.65rem; border-radius: 3px; white-space: nowrap;">Standings</a>
+        <a class="nav-link" href="#" style="color: #eef1f7; text-decoration: none; text-transform: uppercase; font-family: 'Barlow Semi Condensed', sans-serif; font-weight: 700; letter-spacing: 0.04em; font-size: 0.82rem; padding: 0.5rem 0.65rem; border-radius: 3px; white-space: nowrap;">Interviews</a>
+        <a class="nav-link" href="#" style="color: #eef1f7; text-decoration: none; text-transform: uppercase; font-family: 'Barlow Semi Condensed', sans-serif; font-weight: 700; letter-spacing: 0.04em; font-size: 0.82rem; padding: 0.5rem 0.65rem; border-radius: 3px; white-space: nowrap;">Analysis</a>
+        <a class="nav-link" href="#" style="color: #eef1f7; text-decoration: none; text-transform: uppercase; font-family: 'Barlow Semi Condensed', sans-serif; font-weight: 700; letter-spacing: 0.04em; font-size: 0.82rem; padding: 0.5rem 0.65rem; border-radius: 3px; white-space: nowrap;">Schedules</a>
+        <a class="nav-link" href="https://jrfoster09.github.io/f1cc-wiki/pages/teams.html" style="color: #eef1f7; text-decoration: none; text-transform: uppercase; font-family: 'Barlow Semi Condensed', sans-serif; font-weight: 700; letter-spacing: 0.04em; font-size: 0.82rem; padding: 0.5rem 0.65rem; border-radius: 3px; white-space: nowrap;">Teams</a>
+      </nav>
+    </div>
+
+    <div class="frontpage">
+      <div>
+        <section class="panel" id="story-panel"></section>
+        <a class="back-link" href="index.html">Back to front page</a>
+      </div>
+
+<!--
+      <aside class="sidebar" aria-label="More stories">
+        <div class="sidebar-head">More Headlines</div>
+        <section class="side-block">
+          <h4 class="side-title">Latest Updates</h4>
+          <ul class="side-list">
+            <li>JackTEF set for FW14B drive at Goodwood while F1 is out of town</li>
+            <li>Ferrari approach to Liam Dela Cruz reportedly rejected after retirement</li>
+            <li>RFK Racing says all four Fords had race-winning speed at Daytona 500</li>
+          </ul>
+          <div class="img-slot side-thumb">
+            <img src="images/Fer EV Garage.jpg" alt="News headline image 1">
+            <div class="img-placeholder">Sidebar image slot 1</div>
+          </div>
+        </section>
+
+
+        <section class="side-block">
+          <h4 class="side-title">Latest On Track</h4>
+          <ul class="side-list">
+            <li>China GP fallout: paddock turns attention to strategy and penalties</li>
+            <li>Japan preview: Suzuka pressure rises for title contenders</li>
+            <li>Ferrari's championship lead becomes the paddock benchmark</li>
+          </ul>
+          <div class="img-slot side-thumb">
+            <img src="images/RB Roy Garage.png" alt="News headline image 2">
+            <div class="img-placeholder">Sidebar image slot 2</div>
+          </div>
+        </section>
+      </aside>
+-->
+      <div id="sidebar-container"></div>
+    </div>
+  </main>
+  <script src="sidebar.js"></script>
+  <script src="stories.js"></script>
+  <script>
+  async function loadCommentsForStory(storyKey) {
+    try {
+      const res = await fetch(`news/comments/${encodeURIComponent(storyKey)}.json`);
+      if (!res.ok) {
+        return { enableVoteDrift: false, comments: [] };
+      }
+      const data = await res.json();
+      return {
+        enableVoteDrift: Boolean(data.enableVoteDrift),
+        comments: Array.isArray(data.comments) ? data.comments : []
+      };
+    } catch (err) {
+      return { enableVoteDrift: false, comments: [] };
+    }
+  }
+
+  function formatCommentDate() {
+    return new Date().toLocaleDateString('en-GB', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric'
+    });
+  }
+
+  function cloneComments(list) {
+    return (list || []).map((c) => ({
+      author: c.author,
+      date: c.date,
+      text: c.text,
+      likes: c.likes,
+      dislikes: c.dislikes,
+      status: c.status || '',
+      replies: cloneComments(c.replies || [])
+    }));
+  }
+
+  function escapeHtml(text) {
+    return String(text)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function renderCommentTree(comments, path = [], voteState = {}, replyTarget = '') {
+    return comments.map((comment, idx) => {
+      const currentPath = path.concat(idx);
+      const voteKey = currentPath.join('.');
+      const activeVote = voteState[voteKey] || '';
+      const replies = (comment.replies && comment.replies.length)
+        ? `<div class="reply-list">${renderCommentTree(comment.replies, currentPath, voteState, replyTarget)}</div>`
+        : '';
+      const status = comment.status ? `<span class="comment-status">${escapeHtml(comment.status)}</span>` : '';
+      const replyComposer = replyTarget === voteKey
+        ? `
+          <div class="reply-compose" data-reply-target="${voteKey}">
+            <input class="reply-name" maxlength="34" placeholder="Display name (optional)">
+            <textarea class="reply-text" maxlength="800" placeholder="Write a reply..."></textarea>
+            <div class="reply-actions">
+              <button class="reply-send" type="button">Send Reply</button>
+              <button class="reply-cancel" type="button">Cancel</button>
+            </div>
+          </div>
+        `
+        : '';
+      return `
+        <article class="comment-card" data-comment-id="${idx}">
+          <div class="comment-head">
+            <span class="comment-author">${escapeHtml(comment.author)}</span>
+            <span class="comment-date">&middot; ${escapeHtml(comment.date)}</span>
+          </div>
+          <p class="comment-text">${escapeHtml(comment.text)}</p>
+          <div class="comment-meta">
+            <button class="vote-btn ${activeVote === 'like' ? 'active-like' : ''}" data-vote="like">Like ${comment.likes}</button>
+            <button class="vote-btn ${activeVote === 'dislike' ? 'active-dislike' : ''}" data-vote="dislike">Dislike ${comment.dislikes}</button>
+            <button class="reply-btn" data-action="reply">Reply</button>
+            ${status}
+          </div>
+          ${replyComposer}
+          ${replies}
+        </article>
+      `;
+    }).join('');
+  }
+
+  function flattenComments(comments, bucket = []) {
+    comments.forEach((comment) => {
+      bucket.push(comment);
+      flattenComments(comment.replies || [], bucket);
+    });
+    return bucket;
+  }
+
+  function getPathFromCard(card) {
+    const path = [];
+    let current = card;
+    while (current && current.classList.contains('comment-card')) {
+      path.unshift(Number(current.dataset.commentId));
+      const parent = current.parentElement;
+      current = parent && parent.closest ? parent.closest('.comment-card') : null;
+    }
+    return path;
+  }
+
+  function getCommentByPath(commentsState, path) {
+    let ref = commentsState;
+    let commentRef = null;
+    path.forEach((idx) => {
+      commentRef = ref[idx];
+      ref = (commentRef && commentRef.replies) ? commentRef.replies : [];
+    });
+    return commentRef;
+  }
+
+  function mountComments(commentsConfig) {
+    const storyPanel = document.getElementById('story-panel');
+    const commentsHost = storyPanel.querySelector('#comments-host');
+    if (!commentsHost) return;
+
+    const seeded = cloneComments(commentsConfig.comments || []);
+    const commentsState = seeded;
+
+    commentsHost.innerHTML = `
+      <section class="comments-wrap" id="comments-wrap">
+        <h3 class="comments-title">Comments</h3>
+        <div class="comment-compose">
+          <input id="comment-name" maxlength="34" placeholder="Display name (optional)">
+          <textarea id="comment-text" maxlength="800" placeholder="Write your comment..."></textarea>
+          <div class="comment-actions">
+            <div class="comment-note">All comments are subject to review before publication.</div>
+            <button class="comment-send" id="comment-send" type="button">Send Comment</button>
+          </div>
+        </div>
+        <div class="comments-list" id="comments-list"></div>
+      </section>
+    `;
+
+    const commentsList = commentsHost.querySelector('#comments-list');
+    const inputName = commentsHost.querySelector('#comment-name');
+    const inputText = commentsHost.querySelector('#comment-text');
+    const sendBtn = commentsHost.querySelector('#comment-send');
+    const voteState = {};
+    let replyTarget = '';
+
+    let driftTimer = null;
+
+    function render() {
+      commentsList.innerHTML = commentsState.length
+        ? renderCommentTree(commentsState, [], voteState, replyTarget)
+        : '<p class="comment-note">No public comments yet. Start the discussion.</p>';
+    }
+
+    function startVoteDrift() {
+      if (!commentsConfig.enableVoteDrift) return;
+      driftTimer = window.setInterval(() => {
+        const flat = flattenComments(commentsState);
+        if (!flat.length) return;
+        const changes = Math.floor(Math.random() * 4) + 1;
+        for (let i = 0; i < changes; i += 1) {
+          const target = flat[Math.floor(Math.random() * flat.length)];
+          const voteKey = Math.random() < 0.5 ? 'likes' : 'dislikes';
+          const delta = Math.random() < 0.5 ? -1 : 1;
+          target[voteKey] = Math.max(0, target[voteKey] + delta);
+        }
+        render();
+      }, 3200);
+    }
+
+    commentsList.addEventListener('click', (event) => {
+      const replyTrigger = event.target.closest('.reply-btn');
+      if (replyTrigger) {
+        const card = replyTrigger.closest('.comment-card');
+        if (!card) return;
+        const path = getPathFromCard(card);
+        replyTarget = path.join('.');
+        render();
+        return;
+      }
+
+      const replyCancel = event.target.closest('.reply-cancel');
+      if (replyCancel) {
+        replyTarget = '';
+        render();
+        return;
+      }
+
+      const replySend = event.target.closest('.reply-send');
+      if (replySend) {
+        const compose = replySend.closest('.reply-compose');
+        if (!compose) return;
+        const targetPath = (compose.dataset.replyTarget || '').split('.').filter(Boolean).map(Number);
+        const target = getCommentByPath(commentsState, targetPath);
+        if (!target) return;
+
+        const replyName = compose.querySelector('.reply-name');
+        const replyText = compose.querySelector('.reply-text');
+        const text = (replyText && replyText.value || '').trim();
+        const author = (replyName && replyName.value || '').trim() || 'Guest';
+        if (!text) return;
+
+        target.replies = target.replies || [];
+        target.replies.push({
+          author,
+          date: formatCommentDate(),
+          text,
+          likes: 0,
+          dislikes: 0,
+          status: 'Under review',
+          replies: []
+        });
+
+        replyTarget = '';
+        render();
+        return;
+      }
+
+      const button = event.target.closest('.vote-btn');
+      if (!button) return;
+      const card = button.closest('.comment-card');
+      if (!card) return;
+
+      const path = getPathFromCard(card);
+      const commentRef = getCommentByPath(commentsState, path);
+
+      if (!commentRef) return;
+      const voteKey = path.join('.');
+      const clickedVote = button.dataset.vote;
+      const currentVote = voteState[voteKey] || '';
+
+      if (currentVote === clickedVote) {
+        if (clickedVote === 'like' && commentRef.likes > 0) commentRef.likes -= 1;
+        if (clickedVote === 'dislike' && commentRef.dislikes > 0) commentRef.dislikes -= 1;
+        delete voteState[voteKey];
+      } else {
+        if (currentVote === 'like' && commentRef.likes > 0) commentRef.likes -= 1;
+        if (currentVote === 'dislike' && commentRef.dislikes > 0) commentRef.dislikes -= 1;
+
+        if (clickedVote === 'like') commentRef.likes += 1;
+        if (clickedVote === 'dislike') commentRef.dislikes += 1;
+        voteState[voteKey] = clickedVote;
+      }
+      render();
+    });
+
+    sendBtn.addEventListener('click', () => {
+      const raw = inputText.value.trim();
+      if (!raw) return;
+      const author = inputName.value.trim() || 'Guest';
+
+      commentsState.unshift({
+        author,
+        date: formatCommentDate(),
+        text: raw,
+        likes: 0,
+        dislikes: 0,
+        status: 'Under review',
+        replies: []
+      });
+
+      inputText.value = '';
+      render();
+    });
+
+    render();
+    startVoteDrift();
+  }
+
+  async function init() {
+    await window.loadStories();
+
+    const params = new URLSearchParams(window.location.search);
+    const storyKey = params.get('story') || 'china-gp';
+    const story = window.stories[storyKey] || window.stories['china-gp'];
+    const commentsConfig = await loadCommentsForStory(storyKey);
+
+    document.title = `${story.title} | F1CC News`;
+    document.getElementById('story-panel').innerHTML = `
+      <article class="article">
+        <header class="article-head">
+          <div class="label-row">
+            ${ (story.tags || []).map(tag => `<a href="tags.html?tag=${encodeURIComponent(tag)}" class="pill analysis">${tag}</a>`).join(' ') }
+          </div>
+          <h1>${story.title}</h1>
+          <div class="meta">${story.meta}</div>
+        </header>
+        <div class="article-body">
+          <figure class="image-card">
+            <img src="${story.image}" alt="${story.title}">
+            <figcaption>${story.caption}</figcaption>
+          </figure>
+          ${story.body}
+          <div id="comments-host"></div>
+        </div>
+      </article>
+    `;
+
+    mountComments(commentsConfig);
+    }
+  init();
+  </script>
+</body>
+</html>

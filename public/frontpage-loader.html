@@ -1,0 +1,68 @@
+<script>
+  async function initFrontPage() {
+    await window.loadStories();
+    const storiesArray = Object.entries(window.stories).map(([key, story]) => ({ key, ...story }));
+
+    // Define preferred order for front page based on filename or importance
+    const order = ['china-gp', 'season-overview', 'china-fallout', 'ferrari-benchmark', 'japan-preview', 'goodwood', 'liam-ferrari', 'rfk-daytona'];
+    
+    storiesArray.sort((a, b) => {
+        let aIndex = order.indexOf(a.key);
+        let bIndex = order.indexOf(b.key);
+        if (aIndex === -1) aIndex = 999;
+        if (bIndex === -1) bIndex = 999;
+        return aIndex - bIndex;
+    });
+
+    const leadStory = storiesArray[0] || {};
+    const topStory1 = storiesArray[1] || {};
+    const topStory2 = storiesArray[2] || {};
+    const teasers = storiesArray.slice(3, 7); // Next 4 stories
+
+    const heroContainer = document.getElementById('hero-container');
+    if (heroContainer && leadStory.key) {
+        heroContainer.innerHTML = `
+        <div class="frontpage">
+            <div class="feature-card">
+                <div class="feature-kicker">Featured Image</div>
+                <a href="article.html?story=${leadStory.key}" aria-label="Open ${leadStory.title}">
+                    <img src="${leadStory.image}" alt="Lead Image" style="width:100%;height:auto;max-height:320px;object-fit:cover;border-radius:4px;border:1px solid #727b8a;display:block;">
+                </a>
+                <a href="article.html?story=${leadStory.key}">
+                    <div class="feature-title">${leadStory.title}</div>
+                </a>
+            </div>
+            <div class="headline-stack" aria-label="Top headlines">
+                ${topStory1.key ? `<a class="headline-link" href="article.html?story=${topStory1.key}">
+                    <div class="headline-kicker">${topStory1.kicker || 'Top Story'}</div>
+                    <h3>${topStory1.title}</h3>
+                    <p>${topStory1.meta}</p>
+                </a>` : ''}
+                ${topStory2.key ? `<a class="headline-link" href="article.html?story=${topStory2.key}">
+                    <div class="headline-kicker">${topStory2.kicker || 'Analysis'}</div>
+                    <h3>${topStory2.title}</h3>
+                    <p>${topStory2.meta}</p>
+                </a>` : ''}
+            </div>
+        </div>`;
+    }
+
+    const teasersContainer = document.getElementById('teasers-container');
+    if (teasersContainer && teasers.length > 0) {
+        teasersContainer.innerHTML = teasers.map(story => `
+            <div class="teaser-card">
+                <div class="label-row" style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.5rem;">
+                    ${(story.tags || []).map(tag => `<a href="tags.html?tag=${encodeURIComponent(tag)}" class="pill ${tag.toLowerCase() === 'breaking' ? 'breaking' : 'analysis'}">${tag}</a>`).join('')}
+                </div>
+                <a href="article.html?story=${story.key}">
+                    <img class="teaser-image" src="${story.image}" alt="${story.title}" style="width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;margin:0.5rem 0;border-radius:3px;">
+                    <h3>${story.title}</h3>
+                </a>
+                <p>${story.meta}</p>
+            </div>
+        `).join('');
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', initFrontPage);
+</script>
