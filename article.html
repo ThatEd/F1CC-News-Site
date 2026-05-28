@@ -54,9 +54,9 @@
     .image-card { margin: 0.4rem 0 0.85rem; }
     .image-card img { display: block; width: 100%; max-height: 420px; object-fit: cover; border-radius: 4px; border: 1px solid #727b8a; }
     .image-card figcaption { margin-top: 0.35rem; color: #c3cbd8; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
-    .article-body h2 { margin: 1.05rem 0 0.45rem; font-family: "Barlow Semi Condensed", sans-serif; text-transform: uppercase; font-size: 1.08rem; border-left: 3px solid var(--brand); padding-left: 0.5rem; }
+    .article-body h2 { margin: 1.05rem 0 0.45rem; font-family: "Barlow Semi Condensed", sans-serif; text-transform: uppercase; font-size: 1.08rem; border-left: 3px solid var(--brand); padding-left: 0.45rem; }
     .article-body p { margin: 0.65rem 0; }
-    .back-link { display: inline-flex; margin-top: 0.9rem; color: #fff; text-decoration: none; background: #2a2e35; border: 1px solid #666f7c; border-radius: 3px; padding: 0.45rem 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+    .back-link { display: inline-flex; margin-top: 0.9rem; color: #fff; text-decoration: none; background: #2a2e35; border: 1px solid #666f7c; border-radius: 3px; padding: 0.45rem 0.7rem; font-weight: 700; text-transform: uppercase; font-size: 0.78rem; letter-spacing: 0.04em; }
     .back-link:hover { background: #3a4048; }
 
     .comments-wrap { margin-top: 1rem; border-top: 1px solid var(--line); padding-top: 0.9rem; }
@@ -207,7 +207,7 @@
     .side-list li:last-child { border-bottom: none; padding-bottom: 0; }
     .side-thumb { position: relative; margin-top: 0.8rem; border-radius: 3px; overflow: hidden; border: 1px solid #555d69; }
     .side-thumb img { display: block; width: 100%; height: auto; }
-    .img-placeholder { position: absolute; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; text-transform: uppercase; font-weight: 600; color: rgba(255,255,255,0.7); }
+    .img-placeholder { position: absolute; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.04em; }
 
     @media (max-width: 980px) {
       .frontpage { grid-template-columns: 1fr; }
@@ -280,9 +280,17 @@
   <script src="sidebar.js"></script>
   <script src="stories.js"></script>
   <script>
+  function withCacheBust(url) {
+    const separator = url.includes('?') ? '&' : '?';
+    return `${url}${separator}v=${Date.now()}`;
+  }
+
   async function loadCommentsForStory(storyKey) {
     try {
-      const res = await fetch(`news/comments/${encodeURIComponent(storyKey)}.json`);
+      const res = await fetch(
+        withCacheBust(`news/comments/${encodeURIComponent(storyKey)}.json`),
+        { cache: 'no-store' }
+      );
       if (!res.ok) {
         return { enableVoteDrift: false, comments: [] };
       }
