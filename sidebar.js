@@ -29,20 +29,19 @@ async function renderSidebar() {
     const sidebarContainer = document.getElementById("sidebar-container");
     if (!sidebarContainer) return;
 
-    // Wait for stories.js to be available, then load fresh data
     if (typeof window.loadStories !== 'function') {
         console.warn('loadStories not ready yet, will retry in 10s');
         return;
     }
 
     try {
-        await window.loadStories();   // This is your original loader
+        await window.loadStories();
     } catch (err) {
         console.error('Failed to load stories:', err);
         return;
     }
 
-    // ---- Determine current story (only needed on article pages) ----
+    // ---- Determine current story ----
     const params = new URLSearchParams(window.location.search);
     const currentStoryKey = params.get('story') ||
         (window.location.pathname.endsWith('article.html') ? 'china-gp' : '');
@@ -54,6 +53,7 @@ async function renderSidebar() {
     // ---- "Beyond F1" list ----
     const nonF1 = Object.entries(window.stories)
         .map(([key, story]) => ({ key, ...story }))
+        .filter(s => s.key !== 'index' && s.key !== 'index.json')   // 👈 EXCLUDE index.json
         .filter(s => !Array.isArray(s.tags) || !s.tags.includes('F1'))
         .sort((a, b) => parseSidebarDate(b.meta) - parseSidebarDate(a.meta));
 
@@ -71,6 +71,7 @@ async function renderSidebar() {
         const relatedCandidates = Object.entries(window.stories)
             .map(([key, story]) => ({ key, ...story }))
             .filter(s => s.key !== currentStoryKey)
+            .filter(s => s.key !== 'index' && s.key !== 'index.json')   // 👈 EXCLUDE index.json
             .filter(s => {
                 if (!currentTags.size) return false;
                 if (!Array.isArray(s.tags) || !s.tags.length) return false;
@@ -114,7 +115,7 @@ let refreshTimer;
 async function startSidebarRefresh() {
     clearTimeout(refreshTimer);
     await renderSidebar();
-    refreshTimer = setTimeout(startSidebarRefresh, 100000);
+    refreshTimer = setTimeout(startSidebarRefresh, 10000);
 }
 
 // Start when DOM is ready (but still wait for loadStories to be defined)
