@@ -13,33 +13,14 @@ async function fetchFresh(url) {
 
 window.loadStories = async function() {
   try {
-    const listRes = await fetchFresh('news/');
-    const text = await listRes.text();
-    
-    const regex = /href=(?:"|')([^"']+\.json)(?:"|')/gi;
-    let match;
-    const jsonFiles = [];
-    while ((match = regex.exec(text)) !== null) {
-      let file = match[1];
-      if (file.includes('/')) {
-        file = file.split('/').pop();
-      }
-      if (!jsonFiles.includes(file)) {
-        jsonFiles.push(file);
-      }
+    const indexRes = await fetchFresh('news/index.json');
+    if (!indexRes.ok) {
+      console.error('Failed to load news/index.json');
+      return;
     }
-    
-    if (jsonFiles.length === 0) {
-      console.log('Directory listing blocked, falling back to index.json');
-      try {
-        const fallback = await fetchFresh('news/index.json');
-        if (fallback.ok) {
-          const keys = await fallback.json();
-          keys.forEach(k => jsonFiles.push(k.endsWith('.json') ? k : k + '.json'));
-        }
-      } catch(e) {}
-    }
-    
+    const keys = await indexRes.json();
+    const jsonFiles = keys.map(k => k.endsWith('.json') ? k : k + '.json');
+
     const promises = jsonFiles.map(async (file) => {
       const key = file.replace('.json', '');
       const res = await fetchFresh(`news/${file}`);
@@ -47,9 +28,9 @@ window.loadStories = async function() {
         window.stories[key] = await res.json();
       }
     });
-    
+
     await Promise.all(promises);
   } catch (err) {
-    console.error('Error loading stories from news folder:', err);
+    console.error('Error loading stories:', err);
   }
 };
