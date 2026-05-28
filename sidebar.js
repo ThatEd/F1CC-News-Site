@@ -114,7 +114,7 @@ let refreshTimer;
 async function startSidebarRefresh() {
     clearTimeout(refreshTimer);
     await renderSidebar();
-    refreshTimer = setTimeout(startSidebarRefresh, 10000);
+    refreshTimer = setTimeout(startSidebarRefresh, 100000);
 }
 
 // Start when DOM is ready (but still wait for loadStories to be defined)
