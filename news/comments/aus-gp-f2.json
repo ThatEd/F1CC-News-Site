@@ -1,10 +1,11 @@
+
 {
   "enableVoteDrift": true,
   "comments": [
     {
       "author": "F2Scout",
       "date": "8 Mar 2026",
-      "text": "Jaromir Grunt just pulled off the ultimate heist. Not in the top ten in any practice session, then nicks pole by 0.006 seconds, then wins by nearly nine seconds after a red flag, safety car, and two restarts. That's a star-making performance. Red Bull Academy's next VCARB graduate is already being moulded. Mark my words: he'll be in an F1CC seat by 2027.",
+      "text": "Jaromir Grunt just pulled off the ultimate heist. Not in the top ten in any practice session, then nicks pole by 0.006 seconds, then wins by nearly nine seconds after a red flag, safety car, and two restarts. That's a star-making performance. Samira Al-Rashid called it perfectly: 'Mark my words: Jaromir Grunt will be an F1 driver. The only question is how soon.' Red Bull Academy's next VCARB graduate is already being moulded.",
       "likes": 87,
       "dislikes": 6,
       "replies": [
@@ -14,6 +15,14 @@
           "text": "That AIX Racing car was nowhere in testing, so this is almost entirely the driver. Grunt's race management after the red flag was like a veteran. Kevu and Wright better keep an eye on this guy — VCARB's pipeline is ridiculous.",
           "likes": 52,
           "dislikes": 3,
+          "replies": []
+        },
+        {
+          "author": "BrnoBeliever",
+          "date": "8 Mar 2026",
+          "text": "And the boy from Brno didn't even appear on the practice timesheets. Samira's article captures the magic: zero practice pace, then pole by six thousandths, then a masterclass. If that's not a future F1 star, I don't know what is.",
+          "likes": 38,
+          "dislikes": 2,
           "replies": []
         }
       ]
@@ -38,7 +47,7 @@
     {
       "author": "MittensMania",
       "date": "8 Mar 2026",
-      "text": "Tim Mittens podium! The man was top-three in every practice, got screwed in qualifying, and then drove like a demon on the final lap to hold off Batt and Asdelian. Haas Academy needed this after Cachinho's rough start with Ferrari. Mittens might be the feel-good story of the F2 season.",
+      "text": "Tim Mittens podium! The man was top-three in every practice, got screwed in qualifying, and then drove like a demon on the final lap to hold off Batt and Asdelian. The new article adds that perfect quote: 'I grew up racing on dirt — you learn to hold your line when there's chaos around you.' That's the spirit that got him that podium. Haas Academy needed this after Cachinho's rough start with Ferrari. Mittens might be the feel-good story of the F2 season.",
       "likes": 63,
       "dislikes": 4,
       "replies": [
@@ -263,6 +272,30 @@
           "replies": []
         }
       ]
+    },
+    {
+      "author": "StorytellerFan",
+      "date": "19 Mar 2026",
+      "text": "Samira Al-Rashid's feature writing is a breath of fresh air. The line 'Mark my words: Jaromir Grunt will be an F1 driver. The only question is how soon' is going to be quoted in every paddock notebook. She didn't just report the race; she told the story behind it — the father who sold a family car for a kart engine. That's the stuff that makes you root for a driver.",
+      "likes": 59,
+      "dislikes": 4,
+      "replies": []
+    },
+    {
+      "author": "BrnoBoy",
+      "date": "18 Mar 2026",
+      "text": "Jaromir Grunt's background hit me. 'A boy from Brno who grew up karting on a tight budget, his father running a small garage, his mother working double shifts to fund a set of used tyres.' I've seen kids like that at kart tracks across Europe. When talent meets that kind of sacrifice, you get champions. Grunt's Melbourne wasn't just a win; it was the payoff for a family's entire life. Beautifully written by Al-Rashid.",
+      "likes": 71,
+      "dislikes": 3,
+      "replies": []
+    },
+    {
+      "author": "DirtOvalDreams",
+      "date": "17 Mar 2026",
+      "text": "Mittens' quote about dirt track racing from the new article: 'I grew up racing on dirt — you learn to hold your line when there's chaos around you.' That's the line of the weekend. F2 is chaos, and he handled it like a dirt oval pro. Samira gave his story the spotlight it deserved. More features like this, please.",
+      "likes": 48,
+      "dislikes": 2,
+      "replies": []
     }
   ]
 }
