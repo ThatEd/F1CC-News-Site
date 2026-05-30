@@ -15,6 +15,16 @@ function escapeSidebarHtml(text) {
         .replace(/'/g, '&#39;');
 }
 
+function toPreviewImage(src) {
+    if (!src) return src;
+    const lastSlash = src.lastIndexOf('/');
+    const dir = lastSlash >= 0 ? src.substring(0, lastSlash) : '';
+    const filename = lastSlash >= 0 ? src.substring(lastSlash + 1) : src;
+    const lastDot = filename.lastIndexOf('.');
+    const name = lastDot >= 0 ? filename.substring(0, lastDot) : filename;
+    return `${dir}/preview/${name}.webp`;
+}
+
 function pickRandomStories(stories, limit) {
     const copy = [...stories];
     for (let i = copy.length - 1; i > 0; i -= 1) {
@@ -60,7 +70,7 @@ async function renderSidebar() {
     const liHTML = nonF1.map((s, i) => {
         const border = i < nonF1.length - 1 ? 'border-bottom: 1px dotted #697282; padding-bottom: 0.6rem;' : '';
         return `<li style="display: flex; gap: 0.75rem; align-items: flex-start; ${border}">
-            <img src="${escapeSidebarHtml(s.image)}" alt="${escapeSidebarHtml(s.title)}" style="width: 60px; height: 45px; object-fit: cover; border-radius: 3px; flex-shrink: 0; border: 1px solid #555d69;">
+            <img src="${escapeSidebarHtml(toPreviewImage(s.image))}" alt="${escapeSidebarHtml(s.title)}" style="width: 60px; height: 45px; object-fit: cover; border-radius: 3px; flex-shrink: 0; border: 1px solid #555d69;">
             <a href="article.html?story=${encodeURIComponent(s.key)}" style="color: inherit; text-decoration: none; font-size: 0.93rem; font-weight: 500; line-height: 1.3;">${escapeSidebarHtml(s.title)}</a>
         </li>`;
     }).join('');
@@ -83,7 +93,7 @@ async function renderSidebar() {
             ? recommended.map((s, i) => {
                 const border = i < recommended.length - 1 ? 'border-bottom: 1px dotted #697282; padding-bottom: 0.6rem;' : '';
                 return `<li style="display: flex; gap: 0.75rem; align-items: flex-start; ${border}">
-                    <img src="${escapeSidebarHtml(s.image)}" alt="${escapeSidebarHtml(s.title)}" style="width: 60px; height: 45px; object-fit: cover; border-radius: 3px; flex-shrink: 0; border: 1px solid #555d69;">
+                    <img src="${escapeSidebarHtml(toPreviewImage(s.image))}" alt="${escapeSidebarHtml(s.title)}" style="width: 60px; height: 45px; object-fit: cover; border-radius: 3px; flex-shrink: 0; border: 1px solid #555d69;">
                     <a href="article.html?story=${encodeURIComponent(s.key)}" style="color: inherit; text-decoration: none; font-size: 0.93rem; font-weight: 500; line-height: 1.3;">${escapeSidebarHtml(s.title)}</a>
                 </li>`;
             }).join('')
