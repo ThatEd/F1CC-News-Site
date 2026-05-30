@@ -92,6 +92,7 @@
 
   async function initFrontPage() {
     await window.loadStories();
+    if (typeof renderSidebar === 'function') renderSidebar();
     const storiesArray = Object.entries(window.stories)
       .map(([key, story]) => ({ key, ...story }))
       .filter(s => Array.isArray(s.tags) && s.tags.includes('F1'));
