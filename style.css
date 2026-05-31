@@ -577,6 +577,37 @@ body.dialog-open {
   margin: 0.6rem 0;
 }
 
+/* ---- F1 Team heading accents (article-body) ---- */
+.article-body h2.team-mclaren,
+.article-body h4.team-mclaren      { border-left-color: #FF8700; }
+
+.article-body h2.team-mercedes,
+.article-body h4.team-mercedes     { border-left-color: #00A19B; }
+
+.article-body h2.team-ferrari,
+.article-body h4.team-ferrari      { border-left-color: #E8002D; }
+
+.article-body h2.team-redbull,
+.article-body h4.team-redbull      { border-left-color: #1E41B0; }
+
+.article-body h2.team-williams,
+.article-body h4.team-williams     { border-left-color: #041E42; }
+
+.article-body h2.team-astonmartin,
+.article-body h4.team-astonmartin  { border-left-color: #00665E; }
+
+.article-body h2.team-haas,
+.article-body h4.team-haas         { border-left-color: #E6002B; }
+
+.article-body h2.team-racingbulls,
+.article-body h4.team-racingbulls  { border-left-color: #1634CB; }
+
+.article-body h2.team-alpine,
+.article-body h4.team-alpine       { border-left-color: #0090FF; }
+
+.article-body h2.team-audi,
+.article-body h4.team-audi         { border-left-color: #C40026; }
+
 /* Action buttons */
 .action-row {
   display: flex;
@@ -1005,10 +1036,7 @@ footer {
 
 /* --- merged from inline snippet (metro) --- */
 
-/* article-head2 / article-body2 — alternate layout from inline snippet.
-   Uses h1 for the headline (vs h3 in the primary layout) and
-   a uniform padding on article-head (0.95rem all sides vs 0.95/0.95/0.75). */
-
+/* article-head2 / article-body2 — alternate layout */
 .article-head2 {
   padding: 0.95rem;
   border-bottom: 1px solid var(--line);
@@ -1053,6 +1081,18 @@ footer {
   border-left: 3px solid var(--brand);
   padding-left: 0.5rem;
 }
+
+/* ---- F1 Team heading accents (article-body2) ---- */
+.article-body2 h2.team-mclaren      { border-left-color: #FF8700; }
+.article-body2 h2.team-mercedes     { border-left-color: #00A19B; }
+.article-body2 h2.team-ferrari      { border-left-color: #E8002D; }
+.article-body2 h2.team-redbull      { border-left-color: #1E41B0; }
+.article-body2 h2.team-williams     { border-left-color: #041E42; }
+.article-body2 h2.team-astonmartin  { border-left-color: #00665E; }
+.article-body2 h2.team-haas         { border-left-color: #E6002B; }
+.article-body2 h2.team-racingbulls  { border-left-color: #1634CB; }
+.article-body2 h2.team-alpine       { border-left-color: #0090FF; }
+.article-body2 h2.team-audi         { border-left-color: #C40026; }
 
 .article-body2 p {
   margin: 0.65rem 0;
