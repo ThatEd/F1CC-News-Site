@@ -1,4 +1,5 @@
 [
+  "Merc-Fer-Speculation",
   "aus-gp-f2",
   "aus-gp-reactions",
   "aus-gp-winners-losers",
@@ -13,9 +14,13 @@
   "goodwood",
   "gt3-24h",
   "gt3-thompson",
+  "jap-gp-reactions",
+  "jap-gp-winners-losers",
+  "jap-gp",
   "japan-preview",
   "keisner-audi",
   "keisner-goodwood",
+  "keisner-rumor",
   "kevu-vcarb",
   "liam-ferrari",
   "merc-trouble",
@@ -24,14 +29,9 @@
   "rfk-daytona",
   "season-overview",
   "season-preview-2026",
+  "tef-williams",
   "vandesteene-rise",
   "vcarb-goodwood",
-  "wright-socialmedia",
-  "jap-gp",
-  "jap-gp-reactions",
-  "jap-gp-winners-losers",
-  "tef-williams",
-  "Merc-Fer-Speculation",
   "wright-rumors",
-  "keisner-rumor"
+  "wright-socialmedia"
 ]
