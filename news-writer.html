@@ -426,6 +426,10 @@
       while (h && h !== editor && !/^H[1-6]$/.test(h.tagName)) h = h.parentNode;
       if (!h || h === editor) return;
       e.preventDefault();
+      /* The color swatches are contenteditable=false and confuse the browser's
+         block split, leaking into the new paragraph. Strip them first, then
+         re-add after, so the heading cleanly ends in a normal paragraph. */
+      Array.prototype.forEach.call(editor.querySelectorAll('.nw-hswatch'), function(s) { s.parentNode.removeChild(s); });
       document.execCommand('insertParagraph'); // browser splits the heading
       var next = h.nextElementSibling;
       var prev = h.previousElementSibling;
