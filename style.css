@@ -1249,14 +1249,22 @@ footer {
 }
 
 /* Sub-headings: per-heading --art-h overrides the bar; otherwise the article
-   accent (existing .team-* classes still take precedence for those headings). */
+   accent (existing .team-* classes still take precedence for those headings).
+   A base border-left is set on every level so h1/h3/h4 also draw a bar
+   (h2 already had one from the original rules). */
 .article-body h1,
 .article-body h2,
 .article-body h3,
 .article-body h4 {
+  border-left: 3px solid;
   border-left-color: var(--art-h, var(--art-h2, var(--brand)));
 }
+.article-body h1,
+.article-body h3 {
+  padding-left: 0.5rem;
+}
 .article-body2 h2 {
+  border-left: 3px solid;
   border-left-color: var(--art-h, var(--art-h2, var(--brand)));
 }
 
