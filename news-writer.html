@@ -27,8 +27,7 @@
     .nw-btn.primary { background: #a52624; border-color: #d53f3c; color: #fff; }
     .nw-btn.primary:hover { background: #b8322e; }
 
-    .nw-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; align-items: start; }
-    @media (max-width: 980px) { .nw-grid { grid-template-columns: 1fr; } }
+    .nw-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 0.85rem; }
 
     .nw-form { display: flex; flex-direction: column; gap: 0.85rem; }
     .nw-field { display: flex; flex-direction: column; gap: 0.35rem; }
@@ -98,7 +97,7 @@
     .nw-hint code { color: #f9db55; }
     .nw-hint b { color: #eef1f7; }
     .nw-preview-label { font-family: 'Barlow Semi Condensed', sans-serif; font-weight: 700; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 0.5rem; }
-    .nw-preview { max-width: 100%; }
+    .nw-preview { max-width: 100%; margin-top: 0.6rem; }
     .nw-preview .article { opacity: 1; transform: none; animation: none; margin: 0; }
   </style>
 </head>
@@ -131,8 +130,8 @@
       <button class="nw-btn" id="nw-import" type="button">⬆ Import JSON</button>
     </div>
 
-    <div class="nw-grid">
-      <div class="nw-form">
+    <div class="nw-form">
+      <div class="nw-fields">
 
         <label class="nw-field">
           <span class="nw-label">Kicker (feeds the scrolling ticker)</span>
@@ -168,6 +167,7 @@
           <span class="nw-label">Caption (under the main image)</span>
           <input id="f-caption" type="text" placeholder="A short caption under the image.">
         </label>
+      </div>
 
         <div class="nw-field">
           <span class="nw-label">Article colors</span>
@@ -220,15 +220,6 @@
           <input type="color" id="nw-wheel" aria-hidden="true" style="position:fixed;left:-9999px;top:0;width:1px;height:1px;opacity:0;pointer-events:none;border:0;">
         </div>
 
-        <div class="nw-actions">
-          <button class="nw-btn primary" id="nw-download" type="button">⬇ Download JSON</button>
-          <button class="nw-btn" id="nw-copy" type="button">Copy JSON</button>
-        </div>
-        <div class="nw-status" id="nw-status"></div>
-        <input type="file" id="nw-file" accept=".json,application/json" style="display:none;">
-      </div>
-
-      <div>
         <details class="nw-hint" open>
           <summary>Formatting shortcuts — type or paste these and they format automatically</summary>
           <div class="nw-hint-grid">
@@ -247,9 +238,17 @@
             <span><code>! text</code></span><span><b>Plain line (removes formatting)</b></span>
           </div>
         </details>
-        <div class="nw-preview-label">Live preview</div>
-        <div class="nw-preview"><article class="article" id="nw-preview"></article></div>
+
+        <div class="nw-actions">
+          <button class="nw-btn primary" id="nw-download" type="button">⬇ Download JSON</button>
+          <button class="nw-btn" id="nw-copy" type="button">Copy JSON</button>
+        </div>
+        <div class="nw-status" id="nw-status"></div>
+        <input type="file" id="nw-file" accept=".json,application/json" style="display:none;">
       </div>
+
+      <div class="nw-preview-label">Live preview</div>
+      <div class="nw-preview"><article class="article" id="nw-preview"></article></div>
     </div>
   </main>
 
