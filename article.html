@@ -390,6 +390,35 @@
       </article>
     `;
 
+    // Apply per-article colors (if any) + per-heading colors + quote accents.
+    const articleEl = document.querySelector('#story-panel .article');
+    if (story.colors && articleEl) {
+      const setC = (k, v) => { if (v) articleEl.style.setProperty(k, v); };
+      const c = story.colors;
+      setC('--art-accent', c.accent);
+      setC('--art-accent-hot', c.accentHot || c.accent);
+      setC('--art-h1', c.h1);
+      setC('--art-h2', c.h2);
+      setC('--art-h3', c.h3);
+      setC('--art-section', c.section);
+      setC('--art-text', c.text);
+      setC('--art-soft', c.body || c.text);
+      setC('--art-faint', c.muted);
+    }
+    // Quotes follow the accent of the last heading before them.
+    const artBody = articleEl && articleEl.querySelector('.article-body, .article-body2');
+    if (artBody) {
+      let current = '';
+      Array.prototype.forEach.call(artBody.children, (b) => {
+        if (/^H[1-6]$/.test(b.tagName)) {
+          const inline = (b.style.getPropertyValue('--art-h') || '').trim();
+          current = /^#[0-9a-f]{6}$/i.test(inline) ? inline : getComputedStyle(b).borderLeftColor || '';
+        } else if (b.tagName === 'BLOCKQUOTE') {
+          if (current) b.style.setProperty('--art-q', current);
+        }
+      });
+    }
+
     mountComments(commentsConfig);
     }
   init();
